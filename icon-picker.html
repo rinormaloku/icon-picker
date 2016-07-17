@@ -75,7 +75,6 @@
                     type: String,
                     value: '',
                     reflectToAttribute: true,
-                    readOnly: true
                 },
                 iconNames: {
                     type: Array,
@@ -151,12 +150,10 @@
                 }
             },
             selectionMade: function (iconClicked) {
-                console.debug(iconClicked);
                 if (iconClicked.target.nodeName == 'IRON-ICON') {
                     this._selectedIcon = '' + iconClicked.target._iconName;
-                    this.theIconDialog = this._selectedIcon;
-                    this.$.inputIcon.setAttribute('icon', this._selectedIcon);
-                    this.fire('event-icon-selected', this._selectedIcon);
+                    this.$.inputIcon.setAttribute('icon', '' + this._selectedIcon);
+                    this.fire('event-icon-selected', '' + this._selectedIcon);
                     this.$.theIconDialog.close();
                 }
             },
