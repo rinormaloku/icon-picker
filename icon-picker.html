@@ -1,0 +1,172 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-icons/editor-icons.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+
+<dom-module id="icon-picker">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+            }
+
+            #theIconDialog {
+                max-width: 585px;
+            }
+
+            iron-icon {
+                opacity: 0.7;
+                padding: 15px;
+            }
+
+            iron-icon:hover {
+                opacity: 0.6;
+                color: #00c853;
+            }
+
+            iron-icon:active {
+                opacity: 1;
+            }
+
+            #repositionImages {
+                display:inline-block;
+                text-align:center;
+            }
+
+            .titleCont{
+                width: auto;
+                background-color: #0d47a1;
+                margin-top: -20px;
+                padding: 25px 25px 25px 45px;
+            }
+
+            .titleCont div{
+                color: white;
+                font-size: large;
+            }
+
+        </style>
+
+        <paper-icon-button id="inputIcon" icon="editor:insert-emoticon"
+                           on-click="showIconSelection" prefix></paper-icon-button>
+
+        <paper-dialog id="theIconDialog">
+            <div class="titleCont">
+                <div>{{title}}</div>
+            </div>
+            <div id="repositionImages">
+                <template is="dom-repeat" items="{{iconNames}}">
+                    <iron-icon icon="{{item}}" prefix></iron-icon>
+                </template>
+            </div>
+        </paper-dialog>
+
+    </template>
+
+    <script>
+
+        Polymer({
+            is: 'icon-picker',
+            properties: {
+                _selectedIcon: {
+                    type: String,
+                    value: '',
+                    reflectToAttribute: true,
+                    readOnly: true
+                },
+                iconNames: {
+                    type: Array,
+                    value: [],
+                    notify: true
+                },
+                title:{
+                    type: String,
+                    value: 'placeholder'
+                }
+            },
+            listeners: {
+                'theIconDialog.tap': 'selectionMade'
+            },
+            ready: function () {
+                if (this.iconNames.length == 0) {
+                    this.iconNames = [
+                        'android',
+                        'book',
+                        'announcement',
+                        '3d-rotation',
+                        'accessibility',
+                        'accessible',
+                        'account-balance',
+                        'account-balance-wallet',
+                        'account-box',
+                        'account-circle',
+                        'add',
+                        'add-alert',
+                        'add-box',
+                        'add-circle',
+                        'add-circle-outline',
+                        'add-shopping-cart',
+                        'alarm',
+                        'alarm-on',
+                        'all-out',
+                        'android',
+                        'announcement',
+                        'apps',
+                        'archive',
+                        'arrow-back',
+                        'arrow-downward',
+                        'arrow-drop-down',
+                        'arrow-drop-down-circle',
+                        'arrow-drop-up',
+                        'arrow-forward',
+                        'arrow-upward',
+                        'aspect-ratio',
+                        'assessment',
+                        'assignment',
+                        'assignment-ind',
+                        'assignment-late',
+                        'assignment-return',
+                        'assignment-returned',
+                        'assignment-turned-in',
+                        'attachment',
+                        'autorenew',
+                        'backspace',
+                        'book',
+                        'bookmark',
+                        'create',
+                        'create-new-folder',
+                        'credit-card',
+                        'done',
+                        'dashboard',
+                        'date-range',
+                        'delete',
+                        'bug-report',
+                        'build',
+                        'camera-enhance',
+                        'cancel'
+                    ];
+                }
+            },
+            selectionMade: function (iconClicked) {
+                console.debug(iconClicked);
+                if (iconClicked.target.nodeName == 'IRON-ICON') {
+                    this._selectedIcon = '' + iconClicked.target._iconName;
+                    this.theIconDialog = this._selectedIcon;
+                    this.$.inputIcon.setAttribute('icon', this._selectedIcon);
+                    this.fire('event-icon-selected', this._selectedIcon);
+                    this.$.theIconDialog.close();
+                }
+            },
+            showIconSelection: function () {
+                this.$.theIconDialog.open();
+            },
+            _reset: function () {
+                this.$.inputIcon.setAttribute('icon', 'editor:insert-emoticon');
+            }
+        });
+    </script>
+
+</dom-module>
